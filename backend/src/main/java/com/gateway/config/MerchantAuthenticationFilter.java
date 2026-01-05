@@ -30,7 +30,8 @@ public class MerchantAuthenticationFilter extends OncePerRequestFilter {
             "/health",
             "/api/v1/test/merchant",
             "/api/v1/orders/*/public",
-            "/api/v1/payments/public"
+                "/api/v1/payments/public",
+                "/api/v1/payments/*/public"
     ));
 
     public MerchantAuthenticationFilter(MerchantRepository merchantRepository, ObjectMapper objectMapper) {

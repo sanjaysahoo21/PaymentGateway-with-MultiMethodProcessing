@@ -61,6 +61,14 @@ public class PaymentController {
         return ResponseEntity.ok(toPaymentResponse(payment));
     }
 
+    @GetMapping("/{paymentId}/public")
+    public ResponseEntity<?> getPaymentPublic(@PathVariable("paymentId") String paymentId) {
+        return paymentService.getPayment(paymentId)
+                .map(p -> ResponseEntity.ok(toPaymentResponse(p)))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse("NOT_FOUND_ERROR", "Payment not found")));
+    }
+
     @GetMapping
     public ResponseEntity<?> listPayments(Authentication authentication) {
         Merchant merchant = getMerchant(authentication);

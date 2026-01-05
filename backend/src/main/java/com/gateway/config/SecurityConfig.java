@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/health", "/api/v1/test/merchant", "/api/v1/orders/*/public", "/api/v1/payments/public").permitAll()
+                    .requestMatchers("/health", "/api/v1/test/merchant", "/api/v1/orders/*/public", "/api/v1/payments/public", "/api/v1/payments/*/public").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(merchantAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

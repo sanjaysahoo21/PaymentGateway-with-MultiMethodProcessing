@@ -37,16 +37,22 @@ public final class ValidationUtil {
         if (cardNumber == null) {
             return false;
         }
+        // Remove common formatting characters (spaces, hyphens)
         String digits = cardNumber.replaceAll("[\\s-]", "");
+        // Card numbers must be 13-19 digits
         if (!digits.matches("\\d{13,19}")) {
             return false;
         }
+        // Implement Luhn algorithm to validate card number checksum
         int sum = 0;
         boolean alternate = false;
+        // Iterate from right to left (least significant digit first)
         for (int i = digits.length() - 1; i >= 0; i--) {
             int n = digits.charAt(i) - '0';
             if (alternate) {
+                // Double every second digit (starting from second-to-last)
                 n *= 2;
+                // If result is > 9, subtract 9 (equivalent to summing the digits)
                 if (n > 9) {
                     n -= 9;
                 }
@@ -54,6 +60,7 @@ public final class ValidationUtil {
             sum += n;
             alternate = !alternate;
         }
+        // Valid card numbers have a checksum divisible by 10
         return sum % 10 == 0;
     }
 

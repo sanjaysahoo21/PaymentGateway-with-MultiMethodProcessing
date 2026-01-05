@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST controller for payment management.
+ * Provides endpoints for creating and retrieving payments with support for both
+ * authenticated merchant queries and public checkout status polling.
+ */
 @RestController
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
@@ -34,6 +39,14 @@ public class PaymentController {
         this.orderService = orderService;
     }
 
+    /**
+     * Create a payment for an order (authenticated endpoint).
+     * Merchant must own the order. Supports UPI and Card payment methods.
+     * @param request payment creation request with method-specific details
+     * @param authentication spring security authentication with merchant principal
+     * @return created payment with processing status
+     * @throws ApiException if order not found, owned by different merchant, or validation fails
+     */
     @PostMapping
     public ResponseEntity<?> createPayment(@Valid @RequestBody PaymentCreateRequest request, Authentication authentication) {
         Merchant merchant = getMerchant(authentication);
@@ -41,6 +54,13 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toPaymentResponse(payment));
     }
 
+    /**
+     * Create a payment for checkout flow (public endpoint, no authentication).
+     * Links payment to order's merchant. Used by hosted checkout page.
+     * @param request payment creation request with order_id and method details
+     * @return created payment with processing status
+     * @throws not found error if order doesn't exist
+     */
     @PostMapping("/public")
     public ResponseEntity<?> createPaymentPublic(@Valid @RequestBody PaymentCreateRequest request) {
         Order order = orderService.getOrder(request.getOrderId())
@@ -54,6 +74,13 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toPaymentResponse(payment));
     }
 
+    /**
+     * Get payment details for authenticated merchant.
+     * @param paymentId the payment identifier
+     * @param authentication spring security authentication with merchant principal
+     * @return payment with full details including status and method specifics
+     * @throws ApiException if payment not found or not owned by merchant
+     */
     @GetMapping("/{paymentId}")
     public ResponseEntity<?> getPayment(@PathVariable("paymentId") String paymentId, Authentication authentication) {
         Merchant merchant = getMerchant(authentication);
@@ -61,6 +88,13 @@ public class PaymentController {
         return ResponseEntity.ok(toPaymentResponse(payment));
     }
 
+    /**
+     * Get payment status for checkout polling (public endpoint).
+     * Used by checkout page to poll payment processing status.
+     * @param paymentId the payment identifier
+     * @return payment with id, status, and method-specific details
+     * @throws not found error if payment doesn't exist
+     */
     @GetMapping("/{paymentId}/public")
     public ResponseEntity<?> getPaymentPublic(@PathVariable("paymentId") String paymentId) {
         var result = paymentService.getPayment(paymentId);
@@ -72,6 +106,12 @@ public class PaymentController {
         }
     }
 
+    /**
+     * List all payments for authenticated merchant.
+     * Returns paginated or full list of merchant's payments with status history.
+     * @param authentication spring security authentication with merchant principal
+     * @return list of payments with full details
+     */
     @GetMapping
     public ResponseEntity<?> listPayments(Authentication authentication) {
         Merchant merchant = getMerchant(authentication);

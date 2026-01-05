@@ -10,34 +10,73 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Merchant entity representing a payment merchant integrated with the payment gateway.
+ * Stores merchant authentication credentials (API key/secret) and integration settings.
+ * Merchants can create orders and process payments through this gateway.
+ */
 @Entity
 @Table(name = "merchants")
 public class Merchant {
 
+    /**
+     * Unique identifier for the merchant (UUID).
+     */
     @Id
     private UUID id;
 
+    /**
+     * Merchant's display name.
+     */
     @Column(nullable = false, length = 255)
     private String name;
 
+    /**
+     * Merchant's unique email address.
+     * Used for onboarding and merchant lookup.
+     */
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
+    /**
+     * API key for merchant authentication.
+     * Sent in request headers as X-Api-Key.
+     * Must be unique across all merchants.
+     */
     @Column(name = "api_key", nullable = false, unique = true, length = 64)
     private String apiKey;
 
+    /**
+     * API secret for merchant authentication.
+     * Sent in request headers as X-Api-Secret.
+     * Used in combination with API key for secure authentication.
+     */
     @Column(name = "api_secret", nullable = false, length = 64)
     private String apiSecret;
 
+    /**
+     * Optional webhook URL for asynchronous payment status notifications.
+     * Reserved for future implementation (Deliverable 2).
+     */
     @Column(name = "webhook_url")
     private String webhookUrl;
 
+    /**
+     * Flag indicating whether this merchant is active and can process payments.
+     * Defaults to true; can be set to false to disable a merchant.
+     */
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
 
+    /**
+     * Timestamp when the merchant was created (auto-populated).
+     */
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    /**
+     * Timestamp when the merchant was last updated (auto-populated).
+     */
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 

@@ -53,8 +53,11 @@ public class PaymentService {
 
     @Transactional
     public Payment createPayment(Merchant merchant, PaymentCreateRequest request) {
+        // Fetch order and verify it exists
         Order order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND_ERROR", "Order not found"));
+        
+        // Verify merchant owns this order (prevent cross-merchant access)
         if (!order.getMerchant().getId().equals(merchant.getId())) {
             throw new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND_ERROR", "Order not found");
         }
@@ -72,6 +75,7 @@ public class PaymentService {
         payment.setCreatedAt(now);
         payment.setUpdatedAt(now);
 
+        // Validate and handle payment method-specific details
         if ("upi".equals(method)) {
             handleUpi(request, payment);
         } else if ("card".equals(method)) {
@@ -134,6 +138,7 @@ public class PaymentService {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        // Randomly decide success/failure based on configured success rates
         boolean success = decideSuccess(payment.getMethod());
         payment.setUpdatedAt(Instant.now());
         if (success) {
@@ -145,6 +150,9 @@ public class PaymentService {
         }
     }
 
+    /**
+     * Calculate random delay between min/max bounds for payment processing simulation.
+     */
     private long randomDelay() {
         if (processingDelayMax <= processingDelayMin) {
             return processingDelayMin;
@@ -152,6 +160,9 @@ public class PaymentService {
         return processingDelayMin + (long) (random.nextDouble() * (processingDelayMax - processingDelayMin));
     }
 
+    /**
+     * Determine payment success based on configured success rates and test mode.
+     */
     private boolean decideSuccess(String method) {
         if (testMode) {
             return testPaymentSuccess;

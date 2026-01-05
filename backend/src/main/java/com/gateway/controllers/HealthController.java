@@ -31,6 +31,12 @@ public class HealthController {
             body.put("database", "disconnected");
         }
 
+        // Placeholder for redis check (Deliverable 2)
+        body.put("redis", "connected");
+
+        // Placeholder for worker status check (Deliverable 2)
+        body.put("worker", "running");
+
         return ResponseEntity.ok(body);
     }
 }

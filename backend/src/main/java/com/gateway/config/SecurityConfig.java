@@ -10,15 +10,35 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Spring Security configuration for the payment gateway.
+ * Implements stateless, filter-based authentication using API key and secret headers.
+ * Permits public endpoints for health checks and checkout flow; requires authentication for merchant APIs.
+ */
 @Configuration
 public class SecurityConfig {
 
+    /**
+     * Create merchant authentication filter bean.
+     * Validates X-Api-Key and X-Api-Secret headers for merchant authentication.
+     * @param merchantRepository for looking up merchants by API credentials
+     * @param objectMapper for JSON serialization/deserialization of error responses
+     * @return configured MerchantAuthenticationFilter
+     */
     @Bean
     public MerchantAuthenticationFilter merchantAuthenticationFilter(MerchantRepository merchantRepository,
                                                                      ObjectMapper objectMapper) {
         return new MerchantAuthenticationFilter(merchantRepository, objectMapper);
     }
 
+    /**
+     * Configure HTTP security chain with stateless authentication.
+     * Disables session creation, CSRF, form login, and basic auth.
+     * Permits public endpoints; requires merchant auth for other endpoints.
+     * @param http HttpSecurity builder
+     * @param merchantAuthenticationFilter custom filter for merchant validation
+     * @return configured SecurityFilterChain
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    MerchantAuthenticationFilter merchantAuthenticationFilter) throws Exception {

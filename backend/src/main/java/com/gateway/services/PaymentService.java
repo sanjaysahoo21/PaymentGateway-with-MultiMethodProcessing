@@ -81,7 +81,9 @@ public class PaymentService {
         }
 
         paymentRepository.save(payment);
-        processAsync(payment);
+
+        simulateProcessing(payment);
+        paymentRepository.save(payment);
         return payment;
     }
 
@@ -125,29 +127,22 @@ public class PaymentService {
         payment.setCardLast4(digits.substring(digits.length() - 4));
     }
 
-    private void processAsync(Payment payment) {
-        new Thread(() -> {
-            try {
-                long delay = testMode ? testProcessingDelay : randomDelay();
-                Thread.sleep(delay);
-                Payment stored = paymentRepository.findById(payment.getId()).orElse(null);
-                if (stored == null) {
-                    return;
-                }
-                boolean success = decideSuccess(stored.getMethod());
-                stored.setUpdatedAt(Instant.now());
-                if (success) {
-                    stored.setStatus("success");
-                } else {
-                    stored.setStatus("failed");
-                    stored.setErrorCode("PAYMENT_FAILED");
-                    stored.setErrorDescription("Payment could not be processed");
-                }
-                paymentRepository.save(stored);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }).start();
+    private void simulateProcessing(Payment payment) {
+        try {
+            long delay = testMode ? testProcessingDelay : randomDelay();
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        boolean success = decideSuccess(payment.getMethod());
+        payment.setUpdatedAt(Instant.now());
+        if (success) {
+            payment.setStatus("success");
+        } else {
+            payment.setStatus("failed");
+            payment.setErrorCode("PAYMENT_FAILED");
+            payment.setErrorDescription("Payment could not be processed");
+        }
     }
 
     private long randomDelay() {

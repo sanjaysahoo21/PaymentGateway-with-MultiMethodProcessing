@@ -63,10 +63,13 @@ public class PaymentController {
 
     @GetMapping("/{paymentId}/public")
     public ResponseEntity<?> getPaymentPublic(@PathVariable("paymentId") String paymentId) {
-        return paymentService.getPayment(paymentId)
-                .map(p -> ResponseEntity.ok(toPaymentResponse(p)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ErrorResponse("NOT_FOUND_ERROR", "Payment not found")));
+        var result = paymentService.getPayment(paymentId);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(toPaymentResponse(result.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body((Object) new ErrorResponse("NOT_FOUND_ERROR", "Payment not found"));
+        }
     }
 
     @GetMapping

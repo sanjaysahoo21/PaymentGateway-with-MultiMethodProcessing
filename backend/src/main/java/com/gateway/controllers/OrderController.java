@@ -45,11 +45,13 @@ public class OrderController {
 
     @GetMapping("/{orderId}/public")
     public ResponseEntity<?> getOrderPublic(@PathVariable("orderId") String orderId) {
-        return orderService.getOrder(orderId)
-                .map(this::toPublicOrderResponse)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new com.gateway.dto.ErrorResponse("NOT_FOUND_ERROR", "Order not found")));
+        var result = orderService.getOrder(orderId);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(toPublicOrderResponse(result.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body((Object) new com.gateway.dto.ErrorResponse("NOT_FOUND_ERROR", "Order not found"));
+        }
     }
 
     private Merchant getMerchant(Authentication authentication) {

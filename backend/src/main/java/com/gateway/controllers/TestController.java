@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Test controller for retrieving test merchant credentials.
+ * Useful for API testing and documentation purposes.
+ * The test merchant is automatically seeded on application startup.
+ */
 @RestController
 @RequestMapping("/api/v1/test")
 public class TestController {
@@ -21,6 +26,11 @@ public class TestController {
         this.merchantRepository = merchantRepository;
     }
 
+    /**
+     * Get test merchant credentials for development/testing.
+     * Returns test merchant with API key and secret for making authenticated requests.
+     * @return test merchant credentials (id, email, api_key, api_secret)
+     */
     @GetMapping("/merchant")
     public ResponseEntity<?> getTestMerchant() {
         Optional<Merchant> merchantOpt = merchantRepository.findByEmail("test@example.com");

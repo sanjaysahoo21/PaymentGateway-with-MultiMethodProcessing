@@ -9,6 +9,10 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Health check controller for monitoring application and dependencies.
+ * Checks database connectivity and includes placeholders for redis/worker status.
+ */
 @RestController
 public class HealthController {
 
@@ -18,6 +22,11 @@ public class HealthController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Get application health status.
+     * Checks database connectivity. Returns status, timestamp, and service statuses.
+     * @return ResponseEntity with status, timestamp, database, redis, and worker fields
+     */
     @GetMapping("/health")
     public ResponseEntity<Map<String, Object>> health() {
         Map<String, Object> body = new HashMap<>();

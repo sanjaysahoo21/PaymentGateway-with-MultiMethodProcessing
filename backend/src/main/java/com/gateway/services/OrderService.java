@@ -24,6 +24,7 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(Merchant merchant, OrderCreateRequest request) {
+        // Validate amount >= 100 paise (minimum order value)
         if (request.getAmount() == null || request.getAmount() < 100) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "BAD_REQUEST_ERROR", "amount must be at least 100");
         }
@@ -44,15 +45,18 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    // Ensures merchant can only access their own orders
     public Order getOrderForMerchant(String orderId, Merchant merchant) {
         Optional<Order> order = orderRepository.findByIdAndMerchantId(orderId, merchant.getId());
         return order.orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND_ERROR", "Order not found"));
     }
 
+    // Public endpoint - used by hosted checkout page for initial order fetch
     public Optional<Order> getOrder(String orderId) {
         return orderRepository.findById(orderId);
     }
 
+    // Generate unique order ID with collision detection (SecureRandom ensures true uniqueness)
     private String generateUniqueOrderId() {
         String id;
         do {

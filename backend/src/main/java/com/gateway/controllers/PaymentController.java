@@ -61,6 +61,16 @@ public class PaymentController {
         return ResponseEntity.ok(toPaymentResponse(payment));
     }
 
+    @GetMapping
+    public ResponseEntity<?> listPayments(Authentication authentication) {
+        Merchant merchant = getMerchant(authentication);
+        java.util.List<Payment> payments = paymentService.listPaymentsForMerchant(merchant);
+        java.util.List<Map<String, Object>> response = payments.stream()
+                .map(this::toPaymentResponse)
+                .toList();
+        return ResponseEntity.ok(response);
+    }
+
     private Merchant getMerchant(Authentication authentication) {
         if (authentication == null || !(authentication.getPrincipal() instanceof Merchant)) {
             throw new ApiException(HttpStatus.UNAUTHORIZED, "AUTHENTICATION_ERROR", "Invalid API credentials");

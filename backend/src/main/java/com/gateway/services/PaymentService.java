@@ -97,6 +97,10 @@ public class PaymentService {
         return paymentRepository.findById(paymentId);
     }
 
+    public java.util.List<Payment> listPaymentsForMerchant(Merchant merchant) {
+        return paymentRepository.findByMerchantId(merchant.getId());
+    }
+
     private void handleUpi(PaymentCreateRequest request, Payment payment) {
         if (!ValidationUtil.isValidVpa(request.getVpa())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "INVALID_VPA", "VPA format invalid");

@@ -53,11 +53,9 @@ public class PaymentService {
 
     @Transactional
     public Payment createPayment(Merchant merchant, PaymentCreateRequest request) {
-        // Fetch order and verify it exists
         Order order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND_ERROR", "Order not found"));
         
-        // Verify merchant owns this order (prevent cross-merchant access)
         if (!order.getMerchant().getId().equals(merchant.getId())) {
             throw new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND_ERROR", "Order not found");
         }
@@ -75,7 +73,6 @@ public class PaymentService {
         payment.setCreatedAt(now);
         payment.setUpdatedAt(now);
 
-        // Validate and handle payment method-specific details
         if ("upi".equals(method)) {
             handleUpi(request, payment);
         } else if ("card".equals(method)) {

@@ -19,6 +19,8 @@ RUN npm run build
 FROM nginx:1.25-alpine
 # Copy built checkout app to Nginx web root
 COPY --from=build /app/dist /usr/share/nginx/html
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Expose HTTP port
 EXPOSE 80
 # Run Nginx in foreground (required for Docker containers)

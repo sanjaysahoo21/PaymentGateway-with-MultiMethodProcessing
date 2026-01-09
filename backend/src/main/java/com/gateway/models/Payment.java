@@ -37,7 +37,7 @@ public class Payment {
     private String method;
 
     @Column(length = 20, nullable = false)
-    private String status = "created";
+    private String status = "processing";
 
     @Column(length = 255)
     private String vpa;
@@ -91,7 +91,7 @@ public class Payment {
             this.currency = "INR";
         }
         if (this.status == null) {
-            this.status = "created";
+            this.status = "processing";
         }
     }
 

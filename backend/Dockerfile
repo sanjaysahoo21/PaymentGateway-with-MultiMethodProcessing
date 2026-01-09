@@ -8,7 +8,7 @@ FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 # Copy pom.xml and download dependencies (cached layer)
 COPY pom.xml .
-RUN mvn -q -B dependency:go-offline
+RUN mvn -q -B dependency:go-offline || mvn -q -B dependency:go-offline
 # Copy source code and compile
 COPY src ./src
 # Build JAR without running tests for faster builds

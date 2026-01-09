@@ -51,17 +51,17 @@ class ValidationUtilTest {
 
     @Test
     void testExpiryValidation() {
-        assertTrue(ValidationUtil.isValidExpiry("12", "25")); // future
-        assertTrue(ValidationUtil.isValidExpiry("01", "2025")); // future 4-digit
+        assertTrue(ValidationUtil.isValidExpiry("12", "26")); // future
+        assertTrue(ValidationUtil.isValidExpiry("01", "2027")); // future 4-digit
         assertTrue(ValidationUtil.isValidExpiry("12", "99")); // far future
     }
 
     @Test
     void testInvalidExpiry() {
-        assertFalse(ValidationUtil.isValidExpiry("13", "25")); // invalid month
-        assertFalse(ValidationUtil.isValidExpiry("00", "25")); // invalid month
+        assertFalse(ValidationUtil.isValidExpiry("13", "26")); // invalid month
+        assertFalse(ValidationUtil.isValidExpiry("00", "26")); // invalid month
         assertFalse(ValidationUtil.isValidExpiry("12", "20")); // past year
-        assertFalse(ValidationUtil.isValidExpiry(null, "25"));
+        assertFalse(ValidationUtil.isValidExpiry(null, "26"));
         assertFalse(ValidationUtil.isValidExpiry("12", null));
     }
 }

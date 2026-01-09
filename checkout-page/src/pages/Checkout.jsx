@@ -109,6 +109,10 @@ function Checkout() {
   const submitUpi = async (e) => {
     e.preventDefault();
     setError('');
+    if (!orderId) {
+      setError('Order ID is missing from URL');
+      return;
+    }
     setStatus('processing');
     try {
       // Submit UPI payment request
@@ -134,6 +138,10 @@ function Checkout() {
   const submitCard = async (e) => {
     e.preventDefault();
     setError('');
+    if (!orderId) {
+      setError('Order ID is missing from URL');
+      return;
+    }
     setStatus('processing');
     // Parse expiry MM/YY format
     const [expiry_month = '', expiry_year = ''] = (card.expiry || '').split('/');

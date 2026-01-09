@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS payments (
     amount INTEGER NOT NULL,
     currency VARCHAR(3) NOT NULL DEFAULT 'INR',
     method VARCHAR(20) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'created',
+    status VARCHAR(20) NOT NULL DEFAULT 'processing',
     vpa VARCHAR(255),
     card_network VARCHAR(20),
     card_last4 VARCHAR(4),

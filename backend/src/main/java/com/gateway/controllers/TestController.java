@@ -42,6 +42,7 @@ public class TestController {
         body.put("id", merchant.getId());
         body.put("email", merchant.getEmail());
         body.put("api_key", merchant.getApiKey());
+        body.put("api_secret", merchant.getApiSecret());
         body.put("seeded", true);
         return ResponseEntity.ok(body);
     }

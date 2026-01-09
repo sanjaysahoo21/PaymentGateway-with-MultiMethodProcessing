@@ -1,5 +1,6 @@
 package com.gateway.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
  * Request DTO for creating a new payment.
  */
 public class PaymentCreateRequest {
+    @JsonProperty("order_id")
     @NotBlank(message = "order_id is required")
     private String orderId;
 
@@ -70,15 +72,18 @@ public class PaymentCreateRequest {
         @NotBlank(message = "card number is required")
         private String number;
 
+        @JsonProperty("expiry_month")
         @NotBlank(message = "expiry_month is required")
         private String expiryMonth;
 
+        @JsonProperty("expiry_year")
         @NotBlank(message = "expiry_year is required")
         private String expiryYear;
 
         @NotBlank(message = "cvv is required")
         private String cvv;
 
+        @JsonProperty("holder_name")
         @NotBlank(message = "holder_name is required")
         private String holderName;
 

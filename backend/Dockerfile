@@ -19,7 +19,7 @@ RUN mvn -q -B package -DskipTests
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 # Copy compiled JAR from build stage
-COPY --from=build /app/target/payment-gateway-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/monochrome-pay-0.0.1-SNAPSHOT.jar app.jar
 # Expose API port
 EXPOSE 8000
 # Set port environment variable (can be overridden)

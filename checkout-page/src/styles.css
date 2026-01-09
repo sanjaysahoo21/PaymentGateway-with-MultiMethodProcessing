@@ -98,6 +98,185 @@ body {
   text-align: center;
 }
 
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.icon-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Order summary styling */
+.card[data-test-id="order-summary"] {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.card[data-test-id="order-summary"] p {
+  color: var(--text-secondary);
+}
+
+.card[data-test-id="order-summary"] span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.card[data-test-id="order-summary"] h2 {
+  color: var(--text-primary);
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+/* Payment method buttons */
+button[data-method] {
+  width: 100%;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: inherit;
+}
+
+button[data-method]:hover {
+  background: var(--bg-secondary);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+button[data-method]:active {
+  transform: translateY(0);
+}
+
+button[data-method]::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+}
+
+/* Form inputs */
+input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.2);
+  background: var(--bg-secondary);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Submit buttons */
+button[type="submit"] {
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button[type="submit"]:hover {
+  background: var(--primary-strong);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Processing state */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--bg-tertiary);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin: 0 auto 16px;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.card[data-test-id="processing-state"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 48px 32px;
+}
+
+.card[data-test-id="processing-state"] span {
+  color: var(--warn-fg);
+  font-size: 18px;
+  font-weight: 600;
+}
+
 /* SUCCESS STATE */
 .card[data-test-id="success-state"] {
   background: var(--success-bg);
@@ -136,11 +315,35 @@ body {
 .card[data-test-id="error-state"] {
   background: var(--error-bg);
   text-align: center;
+  padding: 48px 32px;
 }
 
 .card[data-test-id="error-state"] h2,
-.card[data-test-id="error-state"] p {
+.card[data-test-id="error-state"] p,
+.card[data-test-id="error-state"] span {
   color: var(--error-fg);
+}
+
+.card[data-test-id="error-state"] button {
+  margin-top: 24px;
+  padding: 14px 32px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card[data-test-id="error-state"] button:hover {
+  background: var(--primary-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* PROCESSING STATE */

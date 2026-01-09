@@ -1,56 +1,23 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 
-// API client configuration
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const client = axios.create({ baseURL });
 
-/**
- * Checkout page component for processing payments.
- * Supports two payment methods: UPI (VPA) and Card.
- * 
- * Features:
- * - Load order details from order_id query parameter
- * - Display order amount and currency
- * - Accept UPI VPA address or card details
- * - Submit payment to backend
- * - Poll payment status every 2 seconds until completion
- * - Display success/failure messages and error details
- * 
- * This is a public page (no authentication required).
- * Used as hosted checkout embedded in merchant websites.
- * 
- * @returns {React.ReactNode} Checkout form with payment method selection
- */
 function Checkout() {
-  // Order details fetched from backend
   const [order, setOrder] = useState(null);
-  // Selected payment method: 'upi' or 'card'
   const [method, setMethod] = useState('');
-  // UPI-specific: Virtual Payment Address
   const [vpa, setVpa] = useState('');
-  // Card-specific: Card details
   const [card, setCard] = useState({ number: '', expiry: '', cvv: '', name: '' });
-  // Payment ID returned after submission (used for polling)
   const [paymentId, setPaymentId] = useState('');
-  // Payment processing state: idle, processing, success, failed
   const [status, setStatus] = useState('idle');
-  // Error message to display
   const [error, setError] = useState('');
 
-  /**
-   * Extract order_id from URL query parameters.
-   * Format: ?order_id=order_XXXXXXXX
-   */
   const orderId = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('order_id');
   }, []);
 
-  /**
-   * Load order details from public endpoint on component mount.
-   * Order ID is extracted from URL query parameters.
-   */
   useEffect(() => {
     const loadOrder = async () => {
       if (!orderId) {
@@ -58,7 +25,6 @@ function Checkout() {
         return;
       }
       try {
-        // Fetch order without authentication (public endpoint)
         const res = await client.get(`/api/v1/orders/${orderId}/public`);
         setOrder(res.data);
       } catch (err) {
@@ -68,20 +34,14 @@ function Checkout() {
     loadOrder();
   }, [orderId]);
 
-  /**
-   * Poll payment status every 2 seconds after payment submission.
-   * Stops polling when payment reaches final status (success or failed).
-   */
   useEffect(() => {
     let interval;
     if (paymentId && status === 'processing') {
       interval = setInterval(async () => {
         try {
-          // Poll payment status from public endpoint
           const res = await client.get(`/api/v1/payments/${paymentId}/public`);
           const nextStatus = res.data.status;
           setStatus(nextStatus);
-          // Stop polling when payment reaches terminal state
           if (nextStatus !== 'processing') {
             clearInterval(interval);
           }
@@ -95,17 +55,8 @@ function Checkout() {
     return () => interval && clearInterval(interval);
   }, [paymentId, status]);
 
-  /**
-   * Format order amount from paise to INR display.
-   * @returns {string} Formatted amount with rupee symbol
-   */
   const amountDisplay = order ? `₹${(order.amount / 100).toFixed(2)}` : '';
 
-  /**
-   * Submit UPI payment with VPA address.
-   * Sends payment request to public endpoint and starts polling.
-   * @param {React.FormEvent} e - Form submission event
-   */
   const submitUpi = async (e) => {
     e.preventDefault();
     setError('');
@@ -115,26 +66,18 @@ function Checkout() {
     }
     setStatus('processing');
     try {
-      // Submit UPI payment request
       const res = await client.post('/api/v1/payments/public', {
         order_id: orderId,
         method: 'upi',
         vpa
       });
-      // Store payment ID for polling
       setPaymentId(res.data.id);
     } catch (err) {
       setStatus('failed');
-      // Display error from backend response or generic message
       setError(err?.response?.data?.error?.description || 'Payment could not be processed');
     }
   };
 
-  /**
-   * Submit card payment with card details.
-   * Parses expiry MM/YY format to separate month/year.
-   * @param {React.FormEvent} e - Form submission event
-   */
   const submitCard = async (e) => {
     e.preventDefault();
     setError('');
@@ -143,10 +86,8 @@ function Checkout() {
       return;
     }
     setStatus('processing');
-    // Parse expiry MM/YY format
     const [expiry_month = '', expiry_year = ''] = (card.expiry || '').split('/');
     try {
-      // Submit card payment request
       const res = await client.post('/api/v1/payments/public', {
         order_id: orderId,
         method: 'card',
@@ -158,11 +99,9 @@ function Checkout() {
           holder_name: card.name
         }
       });
-      // Store payment ID for polling
       setPaymentId(res.data.id);
     } catch (err) {
       setStatus('failed');
-      // Display error from backend response or generic message
       setError(err?.response?.data?.error?.description || 'Payment could not be processed');
     }
   };

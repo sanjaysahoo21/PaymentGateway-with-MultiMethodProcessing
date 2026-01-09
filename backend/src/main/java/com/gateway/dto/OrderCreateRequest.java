@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Map;
 
-/**
- * Request DTO for creating a new order.
- */
 public class OrderCreateRequest {
     @NotNull(message = "amount must be at least 100")
     @Min(value = 100, message = "amount must be at least 100")
@@ -22,16 +19,10 @@ public class OrderCreateRequest {
     public OrderCreateRequest() {
     }
 
-    /**
-     * @return the order amount in paise
-     */
     public Integer getAmount() {
         return amount;
     }
 
-    /**
-     * @param amount the order amount in paise (minimum 100)
-     */
     public void setAmount(Integer amount) {
         this.amount = amount;
     }

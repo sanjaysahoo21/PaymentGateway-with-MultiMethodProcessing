@@ -3,18 +3,12 @@ package com.gateway.util;
 import java.time.YearMonth;
 import java.util.regex.Pattern;
 
-/**
- * Utility class for payment validation.
- */
 public final class ValidationUtil {
     private static final Pattern VPA_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$");
 
     private ValidationUtil() {
     }
 
-    /**
-     * Validate UPI Virtual Payment Address (VPA) format.
-     */
     public static boolean isValidVpa(String vpa) {
         if (vpa == null) {
             return false;
@@ -22,29 +16,20 @@ public final class ValidationUtil {
         return VPA_PATTERN.matcher(vpa).matches();
     }
 
-    /**
-     * Validate card number using Luhn algorithm (13-19 digits).
-     */
     public static boolean isValidCardNumber(String cardNumber) {
         if (cardNumber == null) {
             return false;
         }
-        // Remove common formatting characters (spaces, hyphens)
         String digits = cardNumber.replaceAll("[\\s-]", "");
-        // Card numbers must be 13-19 digits
         if (!digits.matches("\\d{13,19}")) {
             return false;
         }
-        // Implement Luhn algorithm to validate card number checksum
         int sum = 0;
         boolean alternate = false;
-        // Iterate from right to left (least significant digit first)
         for (int i = digits.length() - 1; i >= 0; i--) {
             int n = digits.charAt(i) - '0';
             if (alternate) {
-                // Double every second digit (starting from second-to-last)
                 n *= 2;
-                // If result is > 9, subtract 9 (equivalent to summing the digits)
                 if (n > 9) {
                     n -= 9;
                 }
@@ -52,14 +37,9 @@ public final class ValidationUtil {
             sum += n;
             alternate = !alternate;
         }
-        // Valid card numbers have a checksum divisible by 10
         return sum % 10 == 0;
     }
 
-    /**
-     * Detect card network (brand) from card number.
-     * Supports Visa, Mastercard, Amex, RuPay.
-     */
     public static String detectCardNetwork(String cardNumber) {
         if (cardNumber == null) {
             return "unknown";
@@ -84,9 +64,6 @@ public final class ValidationUtil {
         return "unknown";
     }
 
-    /**
-     * Validate card expiry date (not expired).
-     */
     public static boolean isValidExpiry(String monthString, String yearString) {
         if (monthString == null || yearString == null) {
             return false;

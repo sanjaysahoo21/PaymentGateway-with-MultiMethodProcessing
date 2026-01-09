@@ -15,24 +15,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-/**
- * Spring Security configuration for the payment gateway.
- */
 @Configuration
 public class SecurityConfig {
 
-    /**
-     * Create merchant authentication filter bean.
-     */
     @Bean
     public MerchantAuthenticationFilter merchantAuthenticationFilter(MerchantRepository merchantRepository,
                                                                      ObjectMapper objectMapper) {
         return new MerchantAuthenticationFilter(merchantRepository, objectMapper);
     }
 
-    /**
-     * Configure CORS to allow frontend requests.
-     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -52,9 +43,6 @@ public class SecurityConfig {
         return source;
     }
 
-    /**
-     * Configure HTTP security chain with stateless authentication.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    MerchantAuthenticationFilter merchantAuthenticationFilter) throws Exception {

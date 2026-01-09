@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * REST controller for payment management.
- */
 @RestController
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
@@ -37,9 +34,6 @@ public class PaymentController {
         this.orderService = orderService;
     }
 
-    /**
-     * Create a payment for an order (authenticated endpoint).
-     */
     @PostMapping
     public ResponseEntity<?> createPayment(@Valid @RequestBody PaymentCreateRequest request, Authentication authentication) {
         Merchant merchant = getMerchant(authentication);
@@ -47,9 +41,6 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toPaymentResponse(payment));
     }
 
-    /**
-     * Create a payment for checkout flow (public endpoint).
-     */
     @PostMapping("/public")
     public ResponseEntity<?> createPaymentPublic(@Valid @RequestBody PaymentCreateRequest request) {
         Order order = orderService.getOrder(request.getOrderId())
@@ -63,9 +54,6 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toPaymentResponse(payment));
     }
 
-    /**
-     * Get payment details for authenticated merchant.
-     */
     @GetMapping("/{paymentId}")
     public ResponseEntity<?> getPayment(@PathVariable("paymentId") String paymentId, Authentication authentication) {
         Merchant merchant = getMerchant(authentication);
@@ -73,9 +61,6 @@ public class PaymentController {
         return ResponseEntity.ok(toPaymentResponse(payment));
     }
 
-    /**
-     * Get payment status for checkout polling (public endpoint).
-     */
     @GetMapping("/{paymentId}/public")
     public ResponseEntity<?> getPaymentPublic(@PathVariable("paymentId") String paymentId) {
         var result = paymentService.getPayment(paymentId);
@@ -87,9 +72,6 @@ public class PaymentController {
         }
     }
 
-    /**
-     * List all payments for authenticated merchant.
-     */
     @GetMapping
     public ResponseEntity<?> listPayments(Authentication authentication) {
         Merchant merchant = getMerchant(authentication);

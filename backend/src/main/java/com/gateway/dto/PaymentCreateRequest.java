@@ -5,9 +5,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-/**
- * Request DTO for creating a new payment.
- */
 public class PaymentCreateRequest {
     @JsonProperty("order_id")
     @NotBlank(message = "order_id is required")
@@ -24,30 +21,18 @@ public class PaymentCreateRequest {
     public PaymentCreateRequest() {
     }
 
-    /**
-     * @return the order ID for this payment
-     */
     public String getOrderId() {
         return orderId;
     }
 
-    /**
-     * @param orderId the order ID to set
-     */
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    /**
-     * @return the payment method ("upi" or "card")
-     */
     public String getMethod() {
         return method;
     }
 
-    /**
-     * @param method the payment method to set
-     */
     public void setMethod(String method) {
         this.method = method;
     }

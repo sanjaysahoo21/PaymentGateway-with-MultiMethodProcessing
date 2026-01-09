@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * REST controller for order management.
- * Provides endpoints for authenticated merchants to create and retrieve orders,
- * as well as public endpoints for checkout integration.
- */
 @RestController
 @RequestMapping("/api/v1/orders")
 public class OrderController {
@@ -34,13 +29,6 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    /**
-     * Create a new order for the authenticated merchant.
-     * @param request order creation request containing amount, currency, receipt, notes
-     * @param authentication spring security authentication with merchant principal
-     * @return created order with 201 Created status
-     * @throws ApiException if amount validation fails
-     */
     @PostMapping
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequest request, Authentication authentication) {
         Merchant merchant = getMerchant(authentication);
@@ -48,14 +36,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toOrderResponse(order));
     }
 
-    /**
-     * Retrieve an order for the authenticated merchant.
-     * Verifies ownership before returning order details.
-     * @param orderId the order identifier
-     * @param authentication spring security authentication with merchant principal
-     * @return order details
-     * @throws ApiException if order not found or not owned by merchant
-     */
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable("orderId") String orderId, Authentication authentication) {
         Merchant merchant = getMerchant(authentication);
@@ -63,13 +43,6 @@ public class OrderController {
         return ResponseEntity.ok(toOrderResponse(order));
     }
 
-    /**
-     * Get order details by ID for checkout flow (public endpoint).
-     * No authentication required. Returns minimal order info for checkout.
-     * @param orderId the order identifier
-     * @return order with id, amount, currency, status
-     * @throws not found error if order doesn't exist
-     */
     @GetMapping("/{orderId}/public")
     public ResponseEntity<?> getOrderPublic(@PathVariable("orderId") String orderId) {
         var result = orderService.getOrder(orderId);

@@ -1,26 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary: #635bff;
-  --primary-hover: #5149e4;
-  --success: #00c853;
-  --danger: #f44336;
-  --warning: #ff9800;
-  --dark: #1a1f36;
-  --text-primary: #0a2540;
-  --text-secondary: #425466;
-  --text-muted: #8898aa;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7fafc;
-  --bg-tertiary: #edf2f7;
-  --border: #e3e8ee;
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --primary: #ffffff;
+  --primary-strong: #d4d4d4;
+  --text-primary: #f5f5f5;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a1a1a1;
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111;
+  --bg-tertiary: #161616;
+  --border: rgba(255,255,255,0.08);
+  --shadow-sm: 0 10px 30px rgba(0,0,0,0.25);
+  --shadow-md: 0 16px 40px rgba(0,0,0,0.32);
+  --shadow-lg: 0 22px 60px rgba(0,0,0,0.38);
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --btn-bg: var(--primary);
+  --btn-fg: #0a0a0a;
+  --error-fg: #f5f5f5;
+  --error-bg: rgba(255,255,255,0.08);
+  --success-fg: #f5f5f5;
+  --success-bg: rgba(255,255,255,0.08);
+  --warn-fg: #eaeaea;
+  --warn-bg: rgba(255,255,255,0.06);
 }
+
+/* Light theme removed: dark-only styling */
 
 * {
   box-sizing: border-box;
@@ -28,10 +34,10 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--bg-primary);
   min-height: 100vh;
   color: var(--text-primary);
   display: flex;
@@ -40,6 +46,29 @@ body {
   padding: 20px;
 }
 
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.icon-btn:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+.icon-btn svg { width: 18px; height: 18px; }
+
 .page {
   max-width: 520px;
   width: 100%;
@@ -47,7 +76,7 @@ body {
 }
 
 .card {
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 32px;
@@ -100,11 +129,11 @@ body {
 /* Payment method selection */
 button[data-method] {
   width: 100%;
-  padding: 18px 24px;
+  padding: 16px 20px;
   margin-bottom: 12px;
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
   color: var(--text-primary);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   font-size: 16px;
   font-weight: 600;
@@ -117,10 +146,10 @@ button[data-method] {
 }
 
 button[data-method]:hover {
-  background: var(--bg-primary);
-  border-color: var(--primary);
+  background: var(--bg-secondary);
+  border-color: rgba(255,255,255,0.2);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 button[data-method]:active {
@@ -129,39 +158,31 @@ button[data-method]:active {
 
 button[data-method]::before {
   content: '';
-  width: 24px;
-  height: 24px;
-  background-size: contain;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
   display: inline-block;
-}
-
-button[data-method="upi"]::before {
-  content: '💳';
-  font-size: 24px;
-}
-
-button[data-method="card"]::before {
-  content: '🏦';
-  font-size: 24px;
 }
 
 input {
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 16px;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 15px;
   font-family: inherit;
   transition: all 0.2s ease;
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 input:focus {
   outline: none;
-  border-color: var(--primary);
-  background: var(--bg-primary);
-  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+  border-color: rgba(255,255,255,0.2);
+  background: var(--bg-secondary);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 input::placeholder {
@@ -183,8 +204,8 @@ button[type="submit"] {
   padding: 16px 24px;
   border: none;
   border-radius: var(--radius-md);
-  background: var(--primary);
-  color: #ffffff;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
   font-size: 16px;
   font-weight: 700;
   font-family: inherit;
@@ -197,7 +218,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background: var(--primary-hover);
+  background: var(--primary-strong);
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
 }
@@ -208,23 +229,54 @@ button[type="submit"]:active {
 
 /* Order summary styling */
 .card[data-test-id="order-summary"] {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-  color: #ffffff;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
   text-align: center;
+}
+.card[data-test-id="error-state"] {
+  background: var(--error-bg);
+  color: var(--error-fg);
+}
+
+.card[data-test-id="error-state"] h2,
+.card[data-test-id="error-state"] span,
+.card[data-test-id="error-state"] p {
+  color: var(--error-fg);
+}
+
+.card[data-test-id="success-state"] {
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.card[data-test-id="success-state"] h2,
+.card[data-test-id="success-state"] span,
+.card[data-test-id="success-state"] p {
+  color: var(--success-fg);
+}
+
+.card[data-test-id="processing-state"] {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.card[data-test-id="processing-state"] h3,
+.card[data-test-id="processing-state"] p {
+  color: var(--warn-fg);
 }
 
 .card[data-test-id="order-summary"] p {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-secondary);
 }
 
 .card[data-test-id="order-summary"] strong,
 .card[data-test-id="order-summary"] span {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .card[data-test-id="order-summary"] h2 {
-  color: #ffffff;
-  font-size: 48px;
+  color: var(--text-primary);
+  font-size: 42px;
   margin-bottom: 8px;
 }
 
@@ -237,7 +289,8 @@ button[type="submit"]:active {
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   display: inline-block;
-  margin: 20px auto;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 @keyframes spin {
@@ -245,8 +298,12 @@ button[type="submit"]:active {
 }
 
 .card[data-test-id="processing-state"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   text-align: center;
-  padding: 48px 32px;
+  padding: 32px 24px;
 }
 
 .card[data-test-id="processing-state"] h3 {
@@ -260,15 +317,14 @@ button[type="submit"]:active {
 /* Success state */
 .card[data-test-id="success-state"] {
   text-align: center;
-  background: linear-gradient(135deg, var(--success) 0%, #00a844 100%);
-  color: #ffffff;
   padding: 48px 32px;
+  color: var(--success-fg);
 }
 
 .card[data-test-id="success-state"] h2 {
-  color: #ffffff;
   font-size: 24px;
   margin-bottom: 16px;
+  color: var(--success-fg);
 }
 
 .card[data-test-id="success-state"] h2::before {
@@ -277,18 +333,27 @@ button[type="submit"]:active {
   width: 80px;
   height: 80px;
   margin: 0 auto 24px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--success-bg);
   border-radius: 50%;
   line-height: 80px;
   font-size: 48px;
   font-weight: bold;
+  color: var(--success-fg);
 }
 
 .card[data-test-id="success-state"] p,
 .card[data-test-id="success-state"] span {
-  color: rgba(255, 255, 255, 0.95);
   font-size: 16px;
+  color: var(--success-fg);
 }
+
+/* Force all text in success card to use theme foreground */
+.card[data-test-id="success-state"] * {
+  color: var(--success-fg);
+}
+
+/* Theme-specific hard overrides to ensure visibility */
+/* Theme overrides removed (dark-only) */
 
 /* Failure state */
 .card[data-test-id="failure-state"] {

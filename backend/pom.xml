@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gateway</groupId>
-    <artifactId>payment-gateway</artifactId>
+    <artifactId>monochrome-pay</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>payment-gateway</name>
-    <description>Payment Gateway with Multi-Method Processing</description>
+    <name>monochrome-pay</name>
+    <description>MonochromePay — Minimalist Payment Gateway</description>
     <properties>
         <java.version>17</java.version>
         <spring-boot.version>3.2.2</spring-boot.version>

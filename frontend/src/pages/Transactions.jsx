@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { createClient } from '../api';
+
 function Transactions() {
   const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -26,13 +27,35 @@ function Transactions() {
 
   return (
     <div className="page">
-      <div className="nav">
-        <button onClick={() => navigate('/dashboard')}>Home</button>
-        <button onClick={() => navigate('/dashboard/transactions')}>Transactions</button>
-        <button onClick={() => setAuth(null)}>Logout</button>
+      <div className="topbar">
+        <div className="brand" onClick={() => navigate('/dashboard')}>
+          <span className="brand-dot" />
+          <div>
+            <span className="brand-name">Gateway</span>
+            <span className="brand-sub">Payments Console</span>
+          </div>
+        </div>
+        <div className="topbar-actions">
+          <button className="ghost" onClick={() => navigate('/dashboard')}>
+            <i className="fa-solid fa-chart-simple" />
+            <span>Dashboard</span>
+          </button>
+          <button className="ghost" onClick={() => setAuth(null)}>
+            <i className="fa-solid fa-arrow-right-from-bracket" />
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
-      <h2>Transactions</h2>
-      <table data-test-id="transactions-table" className="table">
+
+      <div className="card table-card">
+        <div className="panel-head">
+          <div>
+            <p className="eyebrow">Activity</p>
+            <h3>Transactions</h3>
+          </div>
+          <i className="fa-solid fa-receipt" />
+        </div>
+        <table data-test-id="transactions-table" className="table">
         <thead>
           <tr>
             <th>Payment ID</th>
@@ -56,6 +79,7 @@ function Transactions() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

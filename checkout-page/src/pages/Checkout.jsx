@@ -5,6 +5,7 @@ const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const client = axios.create({ baseURL });
 
 function Checkout() {
+  // Dark-only: remove theme switching
   const [order, setOrder] = useState(null);
   const [method, setMethod] = useState('');
   const [vpa, setVpa] = useState('');
@@ -17,6 +18,8 @@ function Checkout() {
     const params = new URLSearchParams(window.location.search);
     return params.get('order_id');
   }, []);
+
+  // No theme switching
 
   useEffect(() => {
     const loadOrder = async () => {
@@ -64,6 +67,10 @@ function Checkout() {
       setError('Order ID is missing from URL');
       return;
     }
+    if (!vpa || !vpa.includes('@')) {
+      setError('Please enter a valid UPI ID (e.g., user@bank)');
+      return;
+    }
     setStatus('processing');
     try {
       const res = await client.post('/api/v1/payments/public', {
@@ -85,15 +92,26 @@ function Checkout() {
       setError('Order ID is missing from URL');
       return;
     }
-    setStatus('processing');
+    // Validate card fields
+    if (!card.number || !card.expiry || !card.cvv || !card.name) {
+      setError('Please fill all card details');
+      return;
+    }
     const [expiry_month = '', expiry_year = ''] = (card.expiry || '').split('/');
+    if (!expiry_month || !expiry_year) {
+      setError('Invalid expiry format. Use MM/YY');
+      return;
+    }
+    // Zero-pad month if needed (e.g., "1" -> "01")
+    const paddedMonth = expiry_month.padStart(2, '0');
+    setStatus('processing');
     try {
       const res = await client.post('/api/v1/payments/public', {
         order_id: orderId,
         method: 'card',
         card: {
-          number: card.number,
-          expiry_month,
+          number: card.number.replace(/\s/g, ''),
+          expiry_month: paddedMonth,
           expiry_year,
           cvv: card.cvv,
           holder_name: card.name
@@ -102,7 +120,14 @@ function Checkout() {
       setPaymentId(res.data.id);
     } catch (err) {
       setStatus('failed');
-      setError(err?.response?.data?.error?.description || 'Payment could not be processed');
+      // Try to extract detailed error message from backend
+      const errorMsg = err?.response?.data?.message 
+        || err?.response?.data?.error?.description 
+        || err?.response?.data?.error 
+        || err?.message 
+        || 'Payment could not be processed';
+      setError(errorMsg);
+      console.error('Payment error:', err?.response?.data || err);
     }
   };
 
@@ -112,8 +137,11 @@ function Checkout() {
     setPaymentId('');
   };
 
+  // Theme toggle removed
+
   return (
     <div className="page" data-test-id="checkout-container">
+      <div className="topbar" />
       <div className="card" data-test-id="order-summary">
         <h2>Complete Payment</h2>
         <div>

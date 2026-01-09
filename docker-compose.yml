@@ -7,7 +7,7 @@ services:
   # PostgreSQL 15 database service
   postgres:
     image: postgres:15-alpine
-    container_name: pg_gateway
+    container_name: pg_monochromepay
     environment:
       POSTGRES_DB: payment_gateway
       POSTGRES_USER: gateway_user
@@ -25,7 +25,7 @@ services:
   api:
     build:
       context: ./backend
-    container_name: gateway_api
+    container_name: monochromepay_api
     ports:
       - "8000:8000"  # Gateway API endpoint
     environment:
@@ -43,7 +43,7 @@ services:
   dashboard:
     build:
       context: ./frontend
-    container_name: gateway_dashboard
+    container_name: monochromepay_dashboard
     ports:
       - "3000:80"  # Dashboard web server
     # Dashboard depends on API for authentication and payment data
@@ -54,7 +54,7 @@ services:
   checkout:
     build:
       context: ./checkout-page
-    container_name: gateway_checkout
+    container_name: monochromepay_checkout
     ports:
       - "3001:80"  # Checkout web server
     # Checkout depends on API for order creation and payment processing

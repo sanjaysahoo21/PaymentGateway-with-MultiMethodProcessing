@@ -1,6 +1,6 @@
-# Payment Gateway with Multi-Method Processing
+# MonochromePay — Minimalist Payment Gateway
 
-A full-featured payment gateway simulation built with **Spring Boot**, **PostgreSQL**, and **React**. Supports merchant authentication, order management, multi-method payments (UPI & Card), and a hosted checkout experience.
+A minimalist payment gateway simulation built with **Spring Boot**, **PostgreSQL**, and **React**. Supports merchant authentication, order management, multi-method payments (UPI & Card), and a hosted checkout experience.
 
 Perfect for portfolio demonstration or learning payment system architecture.
 

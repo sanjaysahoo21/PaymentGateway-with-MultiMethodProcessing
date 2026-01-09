@@ -24,9 +24,29 @@
   --success-bg: rgba(255,255,255,0.08);
   --warn-fg: #eaeaea;
   --warn-bg: rgba(255,255,255,0.06);
+  --danger: #ef4444;
 }
 
-/* Light theme removed: dark-only styling */
+/* Light theme */
+:root[data-theme="light"] {
+  --primary: #0a0a0a;
+  --primary-strong: #2b2b2b;
+  --text-primary: #111111;
+  --text-secondary: #333333;
+  --text-muted: #6b6b6b;
+  --bg-primary: #fafafa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f3f3f3;
+  --border: rgba(0,0,0,0.12);
+  --btn-bg: var(--primary);
+  --btn-fg: #ffffff;
+  --error-fg: #111111;
+  --error-bg: rgba(0,0,0,0.06);
+  --success-fg: #111111;
+  --success-bg: rgba(0,0,0,0.06);
+  --warn-fg: #111111;
+  --warn-bg: rgba(0,0,0,0.05);
+}
 
 * {
   box-sizing: border-box;
@@ -35,44 +55,18 @@
 body {
   margin: 0;
   font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background: var(--bg-primary);
-  min-height: 100vh;
   color: var(--text-primary);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.topbar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
-}
-
-.icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.icon-btn:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
-.icon-btn svg { width: 18px; height: 18px; }
-
 .page {
   max-width: 520px;
   width: 100%;
-  margin: 0 auto;
 }
 
 .card {
@@ -86,245 +80,37 @@ body {
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .card h2 {
-  margin: 0 0 24px 0;
+  margin-bottom: 16px;
   font-size: 28px;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.5px;
   text-align: center;
-}
-
-.card h3 {
-  margin: 0 0 16px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .card p {
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 8px 0;
-}
-
-.card strong {
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-/* Payment method selection */
-button[data-method] {
-  width: 100%;
-  padding: 16px 20px;
-  margin-bottom: 12px;
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
   font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-button[data-method]:hover {
-  background: var(--bg-secondary);
-  border-color: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
-button[data-method]:active {
-  transform: translateY(0);
-}
-
-button[data-method]::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--primary);
-  display: inline-block;
-}
-
-input {
-  width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 15px;
-  font-family: inherit;
-  transition: all 0.2s ease;
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-input:focus {
-  outline: none;
-  border-color: rgba(255,255,255,0.2);
-  background: var(--bg-secondary);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-}
-
-input::placeholder {
-  color: var(--text-muted);
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-button[type="submit"] {
-  width: 100%;
-  padding: 16px 24px;
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--btn-bg);
-  color: var(--btn-fg);
-  font-size: 16px;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-md);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-button[type="submit"]:hover {
-  background: var(--primary-strong);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-button[type="submit"]:active {
-  transform: translateY(0);
-}
-
-/* Order summary styling */
-.card[data-test-id="order-summary"] {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
   text-align: center;
 }
-.card[data-test-id="error-state"] {
-  background: var(--error-bg);
-  color: var(--error-fg);
-}
 
-.card[data-test-id="error-state"] h2,
-.card[data-test-id="error-state"] span,
-.card[data-test-id="error-state"] p {
-  color: var(--error-fg);
-}
-
+/* SUCCESS STATE */
 .card[data-test-id="success-state"] {
   background: var(--success-bg);
-  color: var(--success-fg);
-}
-
-.card[data-test-id="success-state"] h2,
-.card[data-test-id="success-state"] span,
-.card[data-test-id="success-state"] p {
-  color: var(--success-fg);
-}
-
-.card[data-test-id="processing-state"] {
-  background: var(--warn-bg);
-  color: var(--warn-fg);
-}
-
-.card[data-test-id="processing-state"] h3,
-.card[data-test-id="processing-state"] p {
-  color: var(--warn-fg);
-}
-
-.card[data-test-id="order-summary"] p {
-  color: var(--text-secondary);
-}
-
-.card[data-test-id="order-summary"] strong,
-.card[data-test-id="order-summary"] span {
-  color: var(--text-primary);
-}
-
-.card[data-test-id="order-summary"] h2 {
-  color: var(--text-primary);
-  font-size: 42px;
-  margin-bottom: 8px;
-}
-
-/* Processing state */
-.spinner {
-  width: 48px;
-  height: 48px;
-  border: 5px solid var(--bg-tertiary);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  display: inline-block;
-  margin: 0;
-  flex-shrink: 0;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.card[data-test-id="processing-state"] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  text-align: center;
-  padding: 32px 24px;
-}
-
-.card[data-test-id="processing-state"] h3 {
-  text-align: center;
-  color: var(--text-primary);
-  font-size: 20px;
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-/* Success state */
-.card[data-test-id="success-state"] {
   text-align: center;
   padding: 48px 32px;
+}
+
+.card[data-test-id="success-state"] * {
   color: var(--success-fg);
 }
 
 .card[data-test-id="success-state"] h2 {
   font-size: 24px;
-  margin-bottom: 16px;
-  color: var(--success-fg);
 }
 
 .card[data-test-id="success-state"] h2::before {
@@ -333,7 +119,7 @@ button[type="submit"]:active {
   width: 80px;
   height: 80px;
   margin: 0 auto 24px;
-  background: var(--success-bg);
+  background: var(--bg-tertiary);
   border-radius: 50%;
   line-height: 80px;
   font-size: 48px;
@@ -341,63 +127,49 @@ button[type="submit"]:active {
   color: var(--success-fg);
 }
 
-.card[data-test-id="success-state"] p,
-.card[data-test-id="success-state"] span {
+.card[data-test-id="success-state"] p {
   font-size: 16px;
   color: var(--success-fg);
 }
 
-/* Force all text in success card to use theme foreground */
-.card[data-test-id="success-state"] * {
-  color: var(--success-fg);
+/* ERROR STATE */
+.card[data-test-id="error-state"] {
+  background: var(--error-bg);
+  text-align: center;
 }
 
-/* Theme-specific hard overrides to ensure visibility */
-/* Theme overrides removed (dark-only) */
+.card[data-test-id="error-state"] h2,
+.card[data-test-id="error-state"] p {
+  color: var(--error-fg);
+}
 
-/* Failure state */
+/* PROCESSING STATE */
+.card[data-test-id="processing-state"] {
+  background: var(--warn-bg);
+  text-align: center;
+}
+
+.card[data-test-id="processing-state"] h3,
+.card[data-test-id="processing-state"] p {
+  color: var(--warn-fg);
+}
+
+/* FAILURE STATE */
 .card[data-test-id="failure-state"] {
   text-align: center;
-  background: linear-gradient(135deg, var(--danger) 0%, #d32f2f 100%);
+  background: linear-gradient(135deg, var(--danger), #d32f2f);
   color: #ffffff;
   padding: 48px 32px;
 }
 
-.card[data-test-id="failure-state"] h2 {
-  color: #ffffff;
-  font-size: 24px;
-  margin-bottom: 16px;
-}
-
-.card[data-test-id="failure-state"] h2::before {
-  content: '✕';
-  display: block;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  line-height: 80px;
-  font-size: 48px;
-  font-weight: bold;
-}
-
+.card[data-test-id="failure-state"] h2,
 .card[data-test-id="failure-state"] p {
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 16px;
+  color: #ffffff;
 }
 
 /* Responsive */
 @media (max-width: 640px) {
-  body {
-    padding: 12px;
-  }
-  
-  .card {
-    padding: 24px;
-  }
-  
-  .card h2 {
-    font-size: 24px;
-  }
+  body { padding: 12px; }
+  .card { padding: 24px; }
+  .card h2 { font-size: 24px; }
 }

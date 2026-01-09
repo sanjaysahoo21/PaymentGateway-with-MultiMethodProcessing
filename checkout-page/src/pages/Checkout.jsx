@@ -5,7 +5,11 @@ const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const client = axios.create({ baseURL });
 
 function Checkout() {
-  // Dark-only: remove theme switching
+  // Theme state: persists to localStorage and applies to :root
+  const [theme, setTheme] = useState(() => {
+    const saved = window.localStorage.getItem('theme');
+    return saved === 'light' || saved === 'dark' ? saved : 'dark';
+  });
   const [order, setOrder] = useState(null);
   const [method, setMethod] = useState('');
   const [vpa, setVpa] = useState('');
@@ -19,7 +23,15 @@ function Checkout() {
     return params.get('order_id');
   }, []);
 
-  // No theme switching
+  // Apply theme to document root
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    window.localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  };
 
   useEffect(() => {
     const loadOrder = async () => {
@@ -141,7 +153,22 @@ function Checkout() {
 
   return (
     <div className="page" data-test-id="checkout-container">
-      <div className="topbar" />
+      <div className="topbar">
+        <button className="icon-btn" aria-label="Toggle theme" onClick={toggleTheme} data-test-id="theme-toggle">
+          {theme === 'dark' ? (
+            // Sun icon for light theme
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07L3.51 20.49M20.49 3.51l-1.42 1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+          ) : (
+            // Moon icon for dark theme
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+          )}
+        </button>
+      </div>
       <div className="card" data-test-id="order-summary">
         <h2>Complete Payment</h2>
         <div>

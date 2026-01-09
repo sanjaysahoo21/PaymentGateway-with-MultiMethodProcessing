@@ -1,4 +1,4 @@
-# MonochromePay — Minimalist Payment Gateway
+# MonochromePay — Payment Gateway
 
 A full-featured payment gateway simulation built with **Spring Boot**, **PostgreSQL**, and **React**. Process payments via UPI and Card methods with a merchant dashboard, hosted checkout page, and comprehensive API.
 

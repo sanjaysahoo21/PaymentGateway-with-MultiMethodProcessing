@@ -27,7 +27,29 @@
   --warn-bg: rgba(255,255,255,0.06);
 }
 
-/* Light theme removed: dark-only styling */
+/* Light theme */
+:root[data-theme="light"] {
+  --primary: #0a0a0a;
+  --primary-strong: #2b2b2b;
+  --success: #1a1a1a;
+  --danger: #303030;
+  --warning: #404040;
+  --bg: #fafafa;
+  --panel: #ffffff;
+  --muted: #6b6b6b;
+  --text: #111111;
+  --subtle: #333333;
+  --border: rgba(0,0,0,0.12);
+  --shadow: 0 16px 46px rgba(0,0,0,0.08);
+  --btn-bg: var(--primary);
+  --btn-fg: #ffffff;
+  --error-fg: #111111;
+  --error-bg: rgba(0,0,0,0.06);
+  --success-fg: #111111;
+  --success-bg: rgba(0,0,0,0.06);
+  --warn-fg: #111111;
+  --warn-bg: rgba(0,0,0,0.05);
+}
 
 * {
   box-sizing: border-box;
@@ -185,6 +207,33 @@ button:disabled {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin-right: 0;
+  box-shadow: none;
+}
+
+.icon-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .ghost {

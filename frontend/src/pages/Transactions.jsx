@@ -7,6 +7,19 @@ function Transactions() {
   const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
+  const [theme, setTheme] = useState(() => {
+    const saved = window.localStorage.getItem('theme');
+    return saved === 'light' || saved === 'dark' ? saved : 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    window.localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -36,6 +49,18 @@ function Transactions() {
           </div>
         </div>
         <div className="topbar-actions">
+          <button className="icon-btn" aria-label="Toggle theme" onClick={toggleTheme}>
+            {theme === 'dark' ? (
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07L3.51 20.49M20.49 3.51l-1.42 1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            )}
+          </button>
           <button className="ghost" onClick={() => navigate('/dashboard')}>
             <i className="fa-solid fa-chart-simple" />
             <span>Dashboard</span>
